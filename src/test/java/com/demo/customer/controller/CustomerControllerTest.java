@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,10 +23,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import com.demo.customer.config.CustomerDetailsConstantTests;
 import com.demo.customer.entity.Customers;
+import com.demo.customer.exception.CustomerDetailsException;
 import com.demo.customer.service.CustomerService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CustomerControllerTest {
@@ -34,6 +38,7 @@ public class CustomerControllerTest {
 
 	private static final String getAllCustomer = "/Customers";
 	private static final String getCustomerById = "/customer/1";
+	private static final String getCustomerByIdErrInput = "/customer/a";
 	private static final String getCustomerByName = "/customer";
 	private static final String createCustomer = "/addCustomer";
 	private static final String updateCustomer = "/updateCustomer";
@@ -70,6 +75,14 @@ public class CustomerControllerTest {
 	}
 
 	@Test
+	public void test_getCutomerByIdFailure() throws Exception {
+		when(customerService.getCustomerById(CustomerDetailsConstantTests.id_1)).thenReturn(getMockFirstCustomer());
+		MvcResult result = mockMvc.perform(get(getCustomerByIdErrInput)).andExpect(status().isBadRequest()).andReturn();
+		MockHttpServletResponse response = result.getResponse();
+		assertEquals(CustomerDetailsConstantTests.BAD_STATUS, response.getStatus());
+	}
+
+	@Test
 	public void test_searchCustomerByNameSuccess() throws Exception {
 		List<Customers> customer = prepareCustomerList();
 		when(customerService.searchCustomerByName(CustomerDetailsConstantTests.firstName_1,
@@ -77,6 +90,17 @@ public class CustomerControllerTest {
 		MvcResult result = mockMvc
 				.perform(get(getCustomerByName).param("firstName", CustomerDetailsConstantTests.firstName_1)
 						.param("lastName", CustomerDetailsConstantTests.lastName_1))
+				.andExpect(status().isOk()).andReturn();
+		MockHttpServletResponse response = result.getResponse();
+		assertEquals(HttpStatus.OK.value(), response.getStatus());
+	}
+
+	@Test
+	public void test_searchCustomerByNameSuccess_SingleParam() throws Exception {
+		List<Customers> customer = prepareCustomerList();
+		when(customerService.searchCustomerByName(CustomerDetailsConstantTests.firstName_1, null)).thenReturn(customer);
+		MvcResult result = mockMvc
+				.perform(get(getCustomerByName).param("firstName", CustomerDetailsConstantTests.firstName_1))
 				.andExpect(status().isOk()).andReturn();
 		MockHttpServletResponse response = result.getResponse();
 		assertEquals(HttpStatus.OK.value(), response.getStatus());
@@ -94,6 +118,34 @@ public class CustomerControllerTest {
 		assertEquals(HttpStatus.CREATED.value(), response.getStatus());
 	}
 
+	// Exception Scenario to Create New Customer
+	@Test
+	public void test_addWrongInputCustomerException() throws Exception {
+		try {
+			Customers customer = getMockErrorCustomer();
+			String jsonRequest = om.writeValueAsString(customer);
+			when(customerService.createCustomer(customer)).thenReturn(customer);
+			MvcResult result = mockMvc
+					.perform(post(createCustomer).content(jsonRequest).contentType(MediaType.APPLICATION_JSON_VALUE))
+					.andExpect(status().isBadRequest()).andReturn();
+			MockHttpServletResponse response = result.getResponse();
+			assertEquals(CustomerDetailsConstantTests.BAD_STATUS, response.getStatus());
+		} catch (MethodArgumentNotValidException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// Exception Scenario to Create New Customer
+	@Test
+	public void test_addCustomerFailure() throws Exception {
+		Customers customer = getMockFirstCustomer();
+		String jsonRequest = om.writeValueAsString(customer);
+		when(customerService.isDataAlreadyAvailable(customer)).thenReturn(false);
+		MvcResult result = mockMvc
+				.perform(post(createCustomer).content(jsonRequest).contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(status().is4xxClientError()).andReturn();
+	}
+	
 	@Test
 	public void test_updateCustomerSuccess() throws Exception {
 		Customers customer = getMockFirstCustomer();
@@ -134,6 +186,16 @@ public class CustomerControllerTest {
 		secCustomer.setAge(CustomerDetailsConstantTests.Age_2);
 		secCustomer.setAddress(CustomerDetailsConstantTests.Address_2);
 		return secCustomer;
+	}
+
+	private Customers getMockErrorCustomer() {
+		Customers expCustomer = new Customers();
+		expCustomer.setFirstName(CustomerDetailsConstantTests.errFirstName);
+		expCustomer.setLastName(CustomerDetailsConstantTests.lastName_2);
+		expCustomer.setId(CustomerDetailsConstantTests.id_2);
+		expCustomer.setAge(CustomerDetailsConstantTests.Age_2);
+		expCustomer.setAddress(CustomerDetailsConstantTests.Address_2);
+		return expCustomer;
 	}
 
 }

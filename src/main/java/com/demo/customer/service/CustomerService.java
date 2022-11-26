@@ -25,7 +25,7 @@ public class CustomerService {
 			throw new CustomerDetailsException("Same Customer Detail Already Exist");
 		}
 	}
-
+ 
 	public List<Customers> getAllCustomers() throws ResourceNotFoundException {
 		List<Customers> customerList = customerRepository.findAll();
 		if (!customerList.isEmpty()) {
@@ -43,7 +43,7 @@ public class CustomerService {
 	public List<Customers> searchCustomerByName(String firstName, String lastName) throws ResourceNotFoundException {
 		List<Customers> customer = new ArrayList<>();
 		if (lastName == null) {
-			 customer = customerRepository.findAll(firstName);
+			 customer = customerRepository.findAll(firstName); 
 		} else {
 			 customer = customerRepository.findAll(firstName, lastName);
 		}
@@ -69,7 +69,7 @@ public class CustomerService {
 		return oldCustomer;
 	}
 
-	private Boolean isDataAlreadyAvailable(Customers cust) throws CustomerDetailsException {
+	public Boolean isDataAlreadyAvailable(Customers cust) throws CustomerDetailsException {
 		String firstName = cust.getFirstName();
 		String LastName = cust.getLastName();
 		String Address = cust.getAddress();

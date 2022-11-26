@@ -18,5 +18,9 @@ public class CustomerDetailsConstantTests {
 	public static final int Age_2=35;
 	public static final String Address_2 = "43/D East Coast Road, Chennai";
 	public static final int size =2;
+	
+	public static final String errFirstName = "Hema8$7@";
+	public static final int BAD_STATUS =400;
+	public static final int NOT_FOUND =404;
 			
 }

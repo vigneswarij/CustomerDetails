@@ -36,7 +36,7 @@ public class CustomerExceptionHandler {
 		errorMap.put("errorMessage", CustomerDetailConstant.idErrorMessage);
 
 		return errorMap;
-	}
+	} 
 	
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(CustomerDetailsException.class)
@@ -46,7 +46,7 @@ public class CustomerExceptionHandler {
 		return errorMap;
 	}
 	
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public Map<String, String> handleresourceNotFound(ResourceNotFoundException ex) {
 		Map<String, String> errorMap = new HashMap<>();

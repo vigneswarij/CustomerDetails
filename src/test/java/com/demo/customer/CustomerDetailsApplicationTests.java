@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import com.demo.customer.config.CustomerDetailsConstantTests;
 import com.demo.customer.dao.CustomerRepository;
@@ -60,6 +61,13 @@ public class CustomerDetailsApplicationTests {
 		service.getCustomerById(CustomerDetailsConstantTests.id_1);
 	}
 
+	// Exception Scenario to getCustomerById
+	@Test(expected = ResourceNotFoundException.class) 
+	public void test_getCustomerByIdBadInputException() throws ResourceNotFoundException {
+		when(repository.findById(CustomerDetailsConstantTests.id_1)).thenReturn(Optional.empty());
+		service.getCustomerById(CustomerDetailsConstantTests.id_1);
+	}
+
 	// Positive Scenario to searchByCustomerName
 	@Test
 	public void test_searchCustomerByNameSuccess() throws ResourceNotFoundException {
@@ -78,6 +86,15 @@ public class CustomerDetailsApplicationTests {
 		when(repository.findAll(CustomerDetailsConstantTests.firstName_1, CustomerDetailsConstantTests.lastName_1))
 				.thenReturn(new ArrayList<>());
 		service.searchCustomerByName(CustomerDetailsConstantTests.firstName_1, CustomerDetailsConstantTests.lastName_1);
+	}
+
+	// Exception Scenario to searchByCustomerName
+	@Test(expected = ResourceNotFoundException.class)
+	public void test_searchCustomerByNameException_singleParam() throws ResourceNotFoundException {
+		when(repository.findAll(CustomerDetailsConstantTests.firstName_1)).thenReturn(new ArrayList<>());
+		when(repository.findAll(CustomerDetailsConstantTests.firstName_1, CustomerDetailsConstantTests.lastName_1))
+				.thenReturn(new ArrayList<>());
+		service.searchCustomerByName(CustomerDetailsConstantTests.firstName_1, null);
 	}
 
 	// Positive Scenario to Create New Customer
@@ -100,6 +117,7 @@ public class CustomerDetailsApplicationTests {
 				.thenReturn(Optional.of(getMockFirstCustomer()));
 		when(repository.save(customer)).thenReturn(getMockFirstCustomer());
 		service.createCustomer(customer);
+		
 	}
 
 	// Positive Scenario to updateCustomer details
