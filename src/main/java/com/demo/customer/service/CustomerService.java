@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.demo.customer.config.CustomerDetailConstant;
 import com.demo.customer.dao.CustomerRepository;
 import com.demo.customer.entity.Customers;
 import com.demo.customer.exception.CustomerDetailsException;
@@ -29,7 +30,7 @@ public class CustomerService {
 		if (isDataAlreadyAvailable(cust)) {
 			return customerRepository.save(cust);
 		} else {
-			throw new CustomerDetailsException("Same Customer Detail Already Exist");
+			throw new CustomerDetailsException(CustomerDetailConstant.createErrMessage);
 		}
 	}
 
@@ -43,7 +44,7 @@ public class CustomerService {
 		if (!customerList.isEmpty()) {
 			return customerList;
 		} else {
-			throw new ResourceNotFoundException("Resource Not Found");
+			throw new ResourceNotFoundException(CustomerDetailConstant.notFound);
 		}
 	}
 
@@ -55,7 +56,7 @@ public class CustomerService {
 	 */
 	public Customers getCustomerById(int Id) throws ResourceNotFoundException {
 		return customerRepository.findById(Id)
-				.orElseThrow(() -> new ResourceNotFoundException("Requested resource is not found"));
+				.orElseThrow(() -> new ResourceNotFoundException(CustomerDetailConstant.notFoundBySpecfic));
 	}
 
 	/**
@@ -76,7 +77,7 @@ public class CustomerService {
 			return customer;
 		} else {
 			lastName = (lastName == null) ? "" : lastName;
-			throw new ResourceNotFoundException("The Name " + firstName + " " + lastName + " Not Found");
+			throw new ResourceNotFoundException(CustomerDetailConstant.name + firstName  + lastName + CustomerDetailConstant.notFoundSpecific);
 		}
 
 	}
@@ -95,7 +96,7 @@ public class CustomerService {
 			oldCustomer.setAddress(customer.getAddress());
 			customerRepository.save(oldCustomer);
 		} else {
-			throw new ResourceNotFoundException("There is no customer with id " + customer.getId());
+			throw new ResourceNotFoundException(CustomerDetailConstant.errMsgSpecficById + customer.getId());
 		}
 		return oldCustomer;
 	}
@@ -108,7 +109,7 @@ public class CustomerService {
 
 		Optional<Customers> custDetail = customerRepository.findAll(firstName, LastName, Age, Address);
 		if (custDetail.isPresent()) {
-			throw new CustomerDetailsException("Same Customer Detail Already Exist");
+			throw new CustomerDetailsException(CustomerDetailConstant.createErrMessage);
 		}
 		return true;
 	}
