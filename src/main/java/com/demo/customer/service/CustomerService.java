@@ -18,6 +18,13 @@ public class CustomerService {
 	@Autowired
 	private CustomerRepository customerRepository;
 
+
+	/**
+	 * This service method does not allows to save duplicate records. 
+	 * @param cust
+	 * @return
+	 * @throws CustomerDetailsException
+	 */
 	public Customers createCustomer(Customers cust) throws CustomerDetailsException {
 		if (isDataAlreadyAvailable(cust)) {
 			return customerRepository.save(cust);
@@ -25,7 +32,12 @@ public class CustomerService {
 			throw new CustomerDetailsException("Same Customer Detail Already Exist");
 		}
 	}
- 
+
+	/**
+	 * This method returns all the Customer without any filter
+	 * @return
+	 * @throws ResourceNotFoundException
+	 */
 	public List<Customers> getAllCustomers() throws ResourceNotFoundException {
 		List<Customers> customerList = customerRepository.findAll();
 		if (!customerList.isEmpty()) {
@@ -35,27 +47,46 @@ public class CustomerService {
 		}
 	}
 
+	/**
+	 * This method filter the record based on ID.
+	 * @param Id
+	 * @return
+	 * @throws ResourceNotFoundException
+	 */
 	public Customers getCustomerById(int Id) throws ResourceNotFoundException {
 		return customerRepository.findById(Id)
 				.orElseThrow(() -> new ResourceNotFoundException("Requested resource is not found"));
 	}
 
+	/**
+	 * This method can search the customer by firstName and lastName. firstName is Mandatory But lastname is optional
+	 * @param firstName
+	 * @param lastName
+	 * @return
+	 * @throws ResourceNotFoundException
+	 */
 	public List<Customers> searchCustomerByName(String firstName, String lastName) throws ResourceNotFoundException {
 		List<Customers> customer = new ArrayList<>();
 		if (lastName == null) {
-			 customer = customerRepository.findAll(firstName); 
+			customer = customerRepository.findAll(firstName);
 		} else {
-			 customer = customerRepository.findAll(firstName, lastName);
+			customer = customerRepository.findAll(firstName, lastName);
 		}
 		if (!customer.isEmpty()) {
 			return customer;
 		} else {
-			lastName = (lastName==null)?"":lastName;
-			throw new ResourceNotFoundException("The Name "+firstName +" "+ lastName + " Not Found");
+			lastName = (lastName == null) ? "" : lastName;
+			throw new ResourceNotFoundException("The Name " + firstName + " " + lastName + " Not Found");
 		}
 
 	}
 
+	/**
+	 * This method used to update the Address by ID.
+	 * @param customer
+	 * @return
+	 * @throws ResourceNotFoundException
+	 */
 	public Customers updateCustomer(Customers customer) throws ResourceNotFoundException {
 		Customers oldCustomer = new Customers();
 		Optional<Customers> optCustomer = customerRepository.findById(customer.getId());

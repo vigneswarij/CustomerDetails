@@ -23,12 +23,12 @@ public class Customers {
 	private int id;
 	
 	@NotNull(message = "Firstname is required") 
-	@Pattern(regexp = "^[a-zA-Z]*$", message = "firstName should be a string and It should not accept Specialcharacters|Numbers")
+	@Pattern(regexp = "^[a-zA-Z]*$", message = "FirstName should be a string and It should not accept Specialcharacters|Numbers")
 	@Size(min = 1, max=60)
 	private String firstName;
 	
 	@NotNull(message = "Lastname is required")
-	@Pattern(regexp = "^[a-zA-Z]*$", message = "lastName should be a string and It should not accept Specialcharacters|Numbers")
+	@Pattern(regexp = "^[a-zA-Z]*$", message = "LastName should be a string and It should not accept Specialcharacters|Numbers")
 	@Size(min = 1, max=60)
 	private String lastName;
 	

@@ -19,6 +19,11 @@ import com.demo.customer.config.CustomerDetailConstant;
 @RestControllerAdvice
 public class CustomerExceptionHandler {
 
+	/**
+	 * If Invalid payload request this error message will return.
+	 * @param ex
+	 * @return
+	 */
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public Map<String, String> handleInvalidArgument(MethodArgumentNotValidException ex) {
@@ -26,18 +31,26 @@ public class CustomerExceptionHandler {
 		ex.getBindingResult().getFieldErrors().forEach(error -> {
 			errorMap.put(error.getField(), error.getDefaultMessage());
 		});
-		return errorMap;
+		return errorMap; 
 	}
 	
+	/**
+	 * This message will return if any mismatched RequestParam/PathVariable
+	 * @param ex
+	 * @return
+	 */
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	public Map<String, String> handleInvalidArgument(MethodArgumentTypeMismatchException ex) {
 		Map<String, String> errorMap = new HashMap<>();
 		errorMap.put("errorMessage", CustomerDetailConstant.idErrorMessage);
-
 		return errorMap;
 	} 
 	
+	/**This error message will return when try to create duplicate records.
+	 * @param ex
+	 * @return
+	 */
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(CustomerDetailsException.class)
 	public Map<String, String> handleresourceNotFound(CustomerDetailsException ex) {
@@ -46,6 +59,11 @@ public class CustomerExceptionHandler {
 		return errorMap;
 	}
 	
+	/**
+	 * This will return if requested resource not found in database
+	 * @param ex
+	 * @return
+	 */
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public Map<String, String> handleresourceNotFound(ResourceNotFoundException ex) {
@@ -54,6 +72,11 @@ public class CustomerExceptionHandler {
 		return errorMap;
 	}
 	
+	/**
+	 * This error message will return if missed any mandatory input params.
+	 * @param ex
+	 * @return
+	 */
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	public Map<String, String> handleresourceNotFound(MissingServletRequestParameterException ex) {
@@ -62,6 +85,11 @@ public class CustomerExceptionHandler {
 		return errorMap;
 	}
 	
+	/**
+	 * This will handle be constraintViolation(Name should be String(0-60))|Age should be number|Address size should be 300)
+	 * @param ex
+	 * @return
+	 */
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(ConstraintViolationException.class)
 	public Map<String, String> handleresourceNotFound(ConstraintViolationException ex) {
@@ -70,6 +98,11 @@ public class CustomerExceptionHandler {
 		return errorMap;
 	}
 	
+	/**
+	 * This will return when syntax error in payload request
+	 * @param ex
+	 * @return
+	 */
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public Map<String, String> handleInputsInNotFormat(HttpMessageNotReadableException ex) {
