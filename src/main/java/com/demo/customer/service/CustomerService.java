@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.demo.customer.config.CustomerDetailConstant;
+import com.demo.customer.constant.CustomerDetailConstant;
+import com.demo.customer.controller.CustomerController;
 import com.demo.customer.dao.CustomerRepository;
 import com.demo.customer.entity.Customers;
 import com.demo.customer.exception.CustomerDetailsException;
@@ -18,6 +21,8 @@ public class CustomerService {
 
 	@Autowired
 	private CustomerRepository customerRepository;
+	
+	Logger logger = LoggerFactory.getLogger(CustomerController.class);
 
 
 	/**
@@ -42,6 +47,7 @@ public class CustomerService {
 	public List<Customers> getAllCustomers() throws ResourceNotFoundException {
 		List<Customers> customerList = customerRepository.findAll();
 		if (!customerList.isEmpty()) {
+			logger.info("Data retrieval succesully and the details are: {} ", customerList);
 			return customerList;
 		} else {
 			throw new ResourceNotFoundException(CustomerDetailConstant.notFound);
@@ -67,14 +73,15 @@ public class CustomerService {
 	 * @throws ResourceNotFoundException
 	 */
 	public List<Customers> searchCustomerByName(String firstName, String lastName) throws ResourceNotFoundException {
-		List<Customers> customer = new ArrayList<>();
+		List<Customers> customList = new ArrayList<>();
 		if (lastName == null) {
-			customer = customerRepository.findAll(firstName);
+			customList = customerRepository.findAll(firstName);
 		} else {
-			customer = customerRepository.findAll(firstName, lastName);
+			customList = customerRepository.findAll(firstName, lastName);
 		}
-		if (!customer.isEmpty()) {
-			return customer;
+		if (!customList.isEmpty()) {
+			logger.info("Data retrieval succesully and the details are: {} ", customList);
+			return customList;
 		} else {
 			lastName = (lastName == null) ? "" : lastName;
 			throw new ResourceNotFoundException(CustomerDetailConstant.name + firstName  + lastName + CustomerDetailConstant.notFoundSpecific);

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import com.demo.customer.config.CustomerDetailConstant;
+import com.demo.customer.constant.CustomerDetailConstant;
 
 @RestControllerAdvice
 public class CustomerExceptionHandler {

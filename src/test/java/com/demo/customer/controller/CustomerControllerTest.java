@@ -76,12 +76,12 @@ public class CustomerControllerTest {
 
 	@Test
 	public void test_getCutomerByIdFailure() throws Exception {
-		when(customerService.getCustomerById(CustomerDetailsConstantTests.id_1)).thenReturn(getMockFirstCustomer());
+		when(customerService.getCustomerById(CustomerDetailsConstantTests.id_1)).thenReturn(null);
 		MvcResult result = mockMvc.perform(get(getCustomerByIdErrInput)).andExpect(status().isBadRequest()).andReturn();
 		MockHttpServletResponse response = result.getResponse();
 		assertEquals(CustomerDetailsConstantTests.BAD_STATUS, response.getStatus());
 	}
-
+ 
 	@Test
 	public void test_searchCustomerByNameSuccess() throws Exception {
 		List<Customers> customer = prepareCustomerList();
