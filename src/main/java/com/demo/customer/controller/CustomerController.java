@@ -32,11 +32,12 @@ public class CustomerController {
 
 	@Autowired
 	private CustomerService customerService;
-	
+
 	Logger logger = LoggerFactory.getLogger(CustomerController.class);
-	
+
 	/**
 	 * This endpoint is used to create the new customer.
+	 * 
 	 * @param customer
 	 * @return
 	 * @throws CustomerDetailsException
@@ -45,12 +46,12 @@ public class CustomerController {
 	public ResponseEntity<Customers> addCustomer(@RequestBody @Valid Customers customer)
 			throws CustomerDetailsException {
 		Customers CustomerDetail = customerService.createCustomer(customer);
-	 	logger.info("New Customer Created Successully");
 		if (null != CustomerDetail) {
+			logger.info("New customer details are created");
 			return new ResponseEntity<>(CustomerDetail, HttpStatus.CREATED);
 		} else {
 			logger.error("Problem to Create Customer details");
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
@@ -58,7 +59,7 @@ public class CustomerController {
 	 * 
 	 * @return
 	 * @throws CustomerDetailsException 
-	 * This endpoint used to fetch all the customers
+	 * This endpoint to fetch all the customers
 	 */
 	@GetMapping("/Customers")
 	public ResponseEntity<List<Customers>> getAllCutomers() throws CustomerDetailsException {
@@ -76,7 +77,7 @@ public class CustomerController {
 	@GetMapping("/customer/{id}")
 	public ResponseEntity<Customers> getCustomerById(
 			@PathVariable(value = "id", required = true) @NotNull @Min(0) int id) throws CustomerDetailsException {
-		logger.info("Inside getCustomerById() to get the record of Id :"+ id);
+		logger.info("Inside getCustomerById() to get the record of Id :" + id);
 		return ResponseEntity.ok(customerService.getCustomerById(id));
 	}
 
@@ -85,12 +86,13 @@ public class CustomerController {
 	 * @param name
 	 * @return
 	 * @throws CustomerDetailsException 
-	 * This endpoint used to fetch the customer which we have requested by firstName / lastName
+	 * This endpoint to fetch the customer which we have requested by firstName / lastName
 	 */
 	@GetMapping(value = "/customer")
 	public ResponseEntity<List<Customers>> searchCustomerByName(
 			@RequestParam(name = "firstName", required = true) @NotNull @Size(min = 1, max = 60) @Pattern(regexp = "^[a-zA-Z]*$", message = "FirstName should be a string") String firstName,
-			@RequestParam(name = "lastName", required = false) @Size(min = 1, max = 60) @Pattern(regexp = "^[a-zA-Z]*$", message = "LastName should be a string") String lastName) throws CustomerDetailsException {
+			@RequestParam(name = "lastName", required = false) @Size(min = 1, max = 60) @Pattern(regexp = "^[a-zA-Z]*$", message = "LastName should be a string") String lastName)
+			throws CustomerDetailsException {
 		logger.info("Inside searchCustomerByName() to get record Name");
 		return ResponseEntity.ok(customerService.searchCustomerByName(firstName, lastName));
 	}
@@ -98,7 +100,8 @@ public class CustomerController {
 	/**
 	 * 
 	 * @param customer
-	 * @return This endpoint used to update the Address of the customer.
+	 * @return 
+	 * This endpoint used to update the Address of the customer.
 	 */
 	@PutMapping("/updateCustomer")
 	public ResponseEntity<Customers> updateCustomerAddress(@RequestBody Customers customer)
