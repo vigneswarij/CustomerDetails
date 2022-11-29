@@ -75,9 +75,9 @@ public class CustomerService {
 	public List<Customers> searchCustomerByName(String firstName, String lastName) throws ResourceNotFoundException {
 		List<Customers> customList = new ArrayList<>();
 		if (lastName == null) {
-			customList = customerRepository.findAll(firstName);
+			customList = customerRepository.findByFirstName(firstName);
 		} else {
-			customList = customerRepository.findAll(firstName, lastName);
+			customList = customerRepository.findByFirstNameAndLastName(firstName, lastName);
 		}
 		if (!customList.isEmpty()) {
 			logger.info("Data retrieval succesully and the details are: {} ", customList);
@@ -114,7 +114,7 @@ public class CustomerService {
 		String Address = cust.getAddress();
 		int Age = cust.getAge();
 
-		Optional<Customers> custDetail = customerRepository.findAll(firstName, LastName, Age, Address);
+		Optional<Customers> custDetail = customerRepository.findByFirstNameAndLastNameAndAgeAndAddress(firstName, LastName, Age, Address);
 		if (custDetail.isPresent()) {
 			throw new CustomerDetailsException(CustomerDetailConstant.createErrMessage);
 		}

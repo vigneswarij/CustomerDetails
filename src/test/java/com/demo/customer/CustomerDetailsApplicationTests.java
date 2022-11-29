@@ -71,8 +71,8 @@ public class CustomerDetailsApplicationTests {
 	// Positive Scenario to searchByCustomerName
 	@Test
 	public void test_searchCustomerByNameSuccess() throws ResourceNotFoundException {
-		when(repository.findAll(CustomerDetailsConstantTests.firstName_1)).thenReturn(prepareCustomerList());
-		when(repository.findAll(CustomerDetailsConstantTests.firstName_1, CustomerDetailsConstantTests.lastName_1))
+		when(repository.findByFirstName(CustomerDetailsConstantTests.firstName_1)).thenReturn(prepareCustomerList());
+		when(repository.findByFirstNameAndLastName(CustomerDetailsConstantTests.firstName_1, CustomerDetailsConstantTests.lastName_1))
 				.thenReturn(prepareCustomerList());
 		assertEquals(CustomerDetailsConstantTests.size, service
 				.searchCustomerByName(CustomerDetailsConstantTests.firstName_1, CustomerDetailsConstantTests.lastName_1)
@@ -82,8 +82,8 @@ public class CustomerDetailsApplicationTests {
 	// Exception Scenario to searchByCustomerName
 	@Test(expected = ResourceNotFoundException.class)
 	public void test_searchCustomerByNameException() throws ResourceNotFoundException {
-		when(repository.findAll(CustomerDetailsConstantTests.firstName_1)).thenReturn(new ArrayList<>());
-		when(repository.findAll(CustomerDetailsConstantTests.firstName_1, CustomerDetailsConstantTests.lastName_1))
+		when(repository.findByFirstName(CustomerDetailsConstantTests.firstName_1)).thenReturn(new ArrayList<>());
+		when(repository.findByFirstNameAndLastName(CustomerDetailsConstantTests.firstName_1, CustomerDetailsConstantTests.lastName_1))
 				.thenReturn(new ArrayList<>());
 		service.searchCustomerByName(CustomerDetailsConstantTests.firstName_1, CustomerDetailsConstantTests.lastName_1);
 	}
@@ -91,8 +91,8 @@ public class CustomerDetailsApplicationTests {
 	// Exception Scenario to searchByCustomerName
 	@Test(expected = ResourceNotFoundException.class)
 	public void test_searchCustomerByNameException_singleParam() throws ResourceNotFoundException {
-		when(repository.findAll(CustomerDetailsConstantTests.firstName_1)).thenReturn(new ArrayList<>());
-		when(repository.findAll(CustomerDetailsConstantTests.firstName_1, CustomerDetailsConstantTests.lastName_1))
+		when(repository.findByFirstName(CustomerDetailsConstantTests.firstName_1)).thenReturn(new ArrayList<>());
+		when(repository.findByFirstNameAndLastName(CustomerDetailsConstantTests.firstName_1, CustomerDetailsConstantTests.lastName_1))
 				.thenReturn(new ArrayList<>());
 		service.searchCustomerByName(CustomerDetailsConstantTests.firstName_1, null);
 	}
@@ -101,7 +101,7 @@ public class CustomerDetailsApplicationTests {
 	@Test
 	public void test_createCustomerTestsSuccess() throws CustomerDetailsException {
 		Customers customer = getMockFirstCustomer();
-		when(repository.findAll(CustomerDetailsConstantTests.firstName_1, CustomerDetailsConstantTests.lastName_1,
+		when(repository.findByFirstNameAndLastNameAndAgeAndAddress(CustomerDetailsConstantTests.firstName_1, CustomerDetailsConstantTests.lastName_1,
 				CustomerDetailsConstantTests.Age_1, CustomerDetailsConstantTests.Address_2))
 				.thenReturn(Optional.of(getMockFirstCustomer()));
 		when(repository.save(customer)).thenReturn(getMockFirstCustomer());
@@ -112,7 +112,7 @@ public class CustomerDetailsApplicationTests {
 	@Test(expected = CustomerDetailsException.class)
 	public void test_createCustomerException() throws CustomerDetailsException {
 		Customers customer = getMockFirstCustomer();
-		when(repository.findAll(CustomerDetailsConstantTests.firstName_1, CustomerDetailsConstantTests.lastName_1,
+		when(repository.findByFirstNameAndLastNameAndAgeAndAddress(CustomerDetailsConstantTests.firstName_1, CustomerDetailsConstantTests.lastName_1,
 				CustomerDetailsConstantTests.Age_1, CustomerDetailsConstantTests.Address_1))
 				.thenReturn(Optional.of(getMockFirstCustomer()));
 		when(repository.save(customer)).thenReturn(getMockFirstCustomer());

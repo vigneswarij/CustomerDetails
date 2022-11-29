@@ -11,13 +11,11 @@ import com.demo.customer.entity.Customers;
 
 public interface CustomerRepository extends JpaRepository<Customers, Integer> {
 	
-	@Query(value = "SELECT c FROM Customers c WHERE c.firstName LIKE ?1 and c.lastName LIKE ?2")
-	public List<Customers> findAll(String firstName, String lastName);
+	public List<Customers> findByFirstNameAndLastName(String firstName, String lastName);
 	
-	@Query(value = "SELECT c FROM Customers c WHERE c.firstName LIKE ?1")
-	public List<Customers> findAll(String firstName);
+	public List<Customers> findByFirstName(String firstName);
 	
-	@Query(value = "SELECT c FROM Customers c WHERE c.firstName LIKE ?1 and c.lastName LIKE ?2 and c.age like ?3 and c.address LIKE ?4")
-	public Optional<Customers> findAll(String firstName, String lastName, int age, String address);
+	public Optional<Customers> findByFirstNameAndLastNameAndAgeAndAddress(String firstName, String lastName, int age, String address);
 }
+
 
