@@ -1,10 +1,6 @@
 package com.rebobank.customer.config;
 
 public class CustomerDetailsConstantTests {
-	private CustomerDetailsConstantTests()
-	{
-		
-	}
 	
 	public static final String firstName_1 = "Karthick";
 	public static final String lastName_1 = "Pandian";

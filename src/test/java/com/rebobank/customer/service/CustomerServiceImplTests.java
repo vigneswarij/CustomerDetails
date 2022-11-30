@@ -13,18 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import com.rebobank.customer.config.CustomerDetailsConstantTests;
 import com.rebobank.customer.entity.Customers;
 import com.rebobank.customer.exception.CustomerDetailsException;
 import com.rebobank.customer.exception.ResourceNotFoundException;
 import com.rebobank.customer.repository.CustomerRepository;
-import com.rebobank.customer.service.CustomerService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CustomerServiceTests {
+public class CustomerServiceImplTests {
 
 	@Autowired
 	private CustomerService service;

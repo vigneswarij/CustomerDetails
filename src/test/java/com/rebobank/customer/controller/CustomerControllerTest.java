@@ -31,7 +31,7 @@ import com.rebobank.customer.config.CustomerDetailsConstantTests;
 import com.rebobank.customer.controller.CustomerController;
 import com.rebobank.customer.entity.Customers;
 import com.rebobank.customer.exception.CustomerDetailsException;
-import com.rebobank.customer.service.CustomerService;
+import com.rebobank.customer.service.CustomerServiceImpl;
 
 public class CustomerControllerTest {
 
@@ -47,14 +47,14 @@ public class CustomerControllerTest {
 	ObjectMapper om = new ObjectMapper();
 
 	@Mock
-	private CustomerService customerService;
+	private CustomerServiceImpl customerService;
 
 	@InjectMocks
 	private CustomerController customerController;
 
 	@Before
 	public void init() {
-		MockitoAnnotations.openMocks(this);
+		MockitoAnnotations.openMocks(this); 
 		mockMvc = MockMvcBuilders.standaloneSetup(customerController).alwaysDo(MockMvcResultHandlers.print()).build();
 	}
 
@@ -66,7 +66,7 @@ public class CustomerControllerTest {
 		MockHttpServletResponse response = result.getResponse();
 		assertEquals(HttpStatus.OK.value(), response.getStatus());
 	}
-
+	
 	@Test
 	public void test_getCutomerByIdSuccess() throws Exception {
 		when(customerService.getCustomerById(CustomerDetailsConstantTests.id_1)).thenReturn(getMockFirstCustomer());
