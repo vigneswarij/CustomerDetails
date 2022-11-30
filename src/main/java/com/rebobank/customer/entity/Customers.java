@@ -1,4 +1,4 @@
-package com.demo.customer.entity;
+package com.rebobank.customer.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

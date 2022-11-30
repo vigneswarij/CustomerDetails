@@ -1,4 +1,4 @@
-package com.demo.customer.exception;
+package com.rebobank.customer.exception;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import com.demo.customer.constant.CustomerDetailConstant;
+import com.rebobank.customer.constant.CustomerDetailConstant;
 
 @RestControllerAdvice
 public class CustomerExceptionHandler {
@@ -35,7 +35,7 @@ public class CustomerExceptionHandler {
 	}
 	
 	/**
-	 * This message will return if any mismatched RequestParam/PathVariable
+	 * This message will return if any mismatched RequestParam/PathVariable type.
 	 * @param ex
 	 * @return
 	 */

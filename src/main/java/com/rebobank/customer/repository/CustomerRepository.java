@@ -1,13 +1,11 @@
-package com.demo.customer.dao;
+package com.rebobank.customer.repository;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
-import com.demo.customer.entity.Customers;
-
+import com.rebobank.customer.entity.Customers;
 
 public interface CustomerRepository extends JpaRepository<Customers, Integer> {
 	

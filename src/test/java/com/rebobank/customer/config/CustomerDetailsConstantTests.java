@@ -1,4 +1,4 @@
-package com.demo.customer.config;
+package com.rebobank.customer.config;
 
 public class CustomerDetailsConstantTests {
 	private CustomerDetailsConstantTests()

@@ -1,4 +1,4 @@
-package com.demo.customer.controller;
+package com.rebobank.customer.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -25,12 +25,13 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import com.demo.customer.config.CustomerDetailsConstantTests;
-import com.demo.customer.entity.Customers;
-import com.demo.customer.exception.CustomerDetailsException;
-import com.demo.customer.service.CustomerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rebobank.customer.config.CustomerDetailsConstantTests;
+import com.rebobank.customer.controller.CustomerController;
+import com.rebobank.customer.entity.Customers;
+import com.rebobank.customer.exception.CustomerDetailsException;
+import com.rebobank.customer.service.CustomerService;
 
 public class CustomerControllerTest {
 

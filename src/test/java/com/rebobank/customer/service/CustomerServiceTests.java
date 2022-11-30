@@ -1,4 +1,4 @@
-package com.demo.customer;
+package com.rebobank.customer.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -15,16 +15,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import com.demo.customer.config.CustomerDetailsConstantTests;
-import com.demo.customer.dao.CustomerRepository;
-import com.demo.customer.entity.Customers;
-import com.demo.customer.exception.CustomerDetailsException;
-import com.demo.customer.exception.ResourceNotFoundException;
-import com.demo.customer.service.CustomerService;
+import com.rebobank.customer.config.CustomerDetailsConstantTests;
+import com.rebobank.customer.entity.Customers;
+import com.rebobank.customer.exception.CustomerDetailsException;
+import com.rebobank.customer.exception.ResourceNotFoundException;
+import com.rebobank.customer.repository.CustomerRepository;
+import com.rebobank.customer.service.CustomerService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CustomerDetailsApplicationTests {
+public class CustomerServiceTests {
 
 	@Autowired
 	private CustomerService service;

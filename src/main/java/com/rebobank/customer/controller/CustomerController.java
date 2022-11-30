@@ -1,4 +1,4 @@
-package com.demo.customer.controller;
+package com.rebobank.customer.controller;
 
 import java.util.List;
 
@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.customer.entity.Customers;
-import com.demo.customer.exception.CustomerDetailsException;
-import com.demo.customer.service.CustomerService;
+import com.rebobank.customer.entity.Customers;
+import com.rebobank.customer.exception.CustomerDetailsException;
+import com.rebobank.customer.service.CustomerService;
 
 @RestController
 @Validated

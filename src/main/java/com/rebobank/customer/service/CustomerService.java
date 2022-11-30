@@ -1,4 +1,4 @@
-package com.demo.customer.service;
+package com.rebobank.customer.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,12 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.demo.customer.constant.CustomerDetailConstant;
-import com.demo.customer.controller.CustomerController;
-import com.demo.customer.dao.CustomerRepository;
-import com.demo.customer.entity.Customers;
-import com.demo.customer.exception.CustomerDetailsException;
-import com.demo.customer.exception.ResourceNotFoundException;
+import com.rebobank.customer.constant.CustomerDetailConstant;
+import com.rebobank.customer.controller.CustomerController;
+import com.rebobank.customer.entity.Customers;
+import com.rebobank.customer.exception.CustomerDetailsException;
+import com.rebobank.customer.exception.ResourceNotFoundException;
+import com.rebobank.customer.repository.CustomerRepository;
 
 @Service
 public class CustomerService {
@@ -26,7 +26,7 @@ public class CustomerService {
 
 
 	/**
-	 * This service method does not allows to save duplicate records. 
+	 * It creates new customer and it does not allow to save duplicates record.
 	 * @param cust
 	 * @return
 	 * @throws CustomerDetailsException
@@ -41,6 +41,7 @@ public class CustomerService {
 
 	/**
 	 * This method returns all the Customer without any filter
+	 * 
 	 * @return
 	 * @throws ResourceNotFoundException
 	 */
@@ -55,7 +56,7 @@ public class CustomerService {
 	}
 
 	/**
-	 * This method filter the record based on ID.
+	 * It filter the record by Id.
 	 * @param Id
 	 * @return
 	 * @throws ResourceNotFoundException

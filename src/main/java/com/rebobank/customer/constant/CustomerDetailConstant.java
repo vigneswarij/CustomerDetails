@@ -1,4 +1,4 @@
-package com.demo.customer.constant;
+package com.rebobank.customer.constant;
 
 public class CustomerDetailConstant {
 

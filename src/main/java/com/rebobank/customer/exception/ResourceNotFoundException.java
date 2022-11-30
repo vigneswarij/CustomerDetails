@@ -1,4 +1,4 @@
-package com.demo.customer.exception;
+package com.rebobank.customer.exception;
 
 public class ResourceNotFoundException extends CustomerDetailsException {
 	
