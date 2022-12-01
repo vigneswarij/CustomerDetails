@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.validation.ConstraintViolationException;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -15,10 +16,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.rebobank.customer.constant.CustomerDetailConstant;
+import com.rebobank.customer.dto.CustomerAppError;
 
 @RestControllerAdvice
 public class CustomerExceptionHandler {
 
+	String errMsg;
 	/**
 	 * If Invalid payload request this error message will return.
 	 * @param ex
@@ -26,25 +29,25 @@ public class CustomerExceptionHandler {
 	 */
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public Map<String, String> handleInvalidArgument(MethodArgumentNotValidException ex) {
-		Map<String, String> errorMap = new HashMap<>();
-		ex.getBindingResult().getFieldErrors().forEach(error -> {
-			errorMap.put(error.getField(), error.getDefaultMessage());
+	public ResponseEntity<CustomerAppError> handleInvalidArgument(MethodArgumentNotValidException ex) {
+		errMsg=CustomerDetailConstant.empty;
+		ex.getBindingResult().getFieldErrors().forEach(error -> { 
+			errMsg = errMsg + error.getDefaultMessage()+". ";
 		});
-		return errorMap; 
+		CustomerAppError error = new CustomerAppError(errMsg, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST); 
 	}
 	
 	/**
-	 * This message will return if any mismatched RequestParam/PathVariable type.
+	 * This message will return if any mismatched RequestParam/PathVariable
 	 * @param ex
 	 * @return
 	 */
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
-	public Map<String, String> handleInvalidArgument(MethodArgumentTypeMismatchException ex) {
-		Map<String, String> errorMap = new HashMap<>();
-		errorMap.put("errorMessage", CustomerDetailConstant.idErrorMessage);
-		return errorMap;
+	public ResponseEntity<CustomerAppError> handleInvalidArgument(MethodArgumentTypeMismatchException ex) {
+		CustomerAppError error = new CustomerAppError(CustomerDetailConstant.idErrorMessage, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
 	} 
 	
 	/**This error message will return when try to create duplicate records.
@@ -53,11 +56,10 @@ public class CustomerExceptionHandler {
 	 */
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(CustomerDetailsException.class)
-	public Map<String, String> handleresourceNotFound(CustomerDetailsException ex) {
-		Map<String, String> errorMap = new HashMap<>();
-		errorMap.put("errorMessage", ex.getMessage());
-		return errorMap;
-	}
+	public ResponseEntity<CustomerAppError> handleresourceNotFound(CustomerDetailsException ex) {
+		CustomerAppError error = new CustomerAppError(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(error,HttpStatus.INTERNAL_SERVER_ERROR);
+	} 
 	
 	/**
 	 * This will return if requested resource not found in database
@@ -66,10 +68,9 @@ public class CustomerExceptionHandler {
 	 */
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ExceptionHandler(ResourceNotFoundException.class)
-	public Map<String, String> handleresourceNotFound(ResourceNotFoundException ex) {
-		Map<String, String> errorMap = new HashMap<>();
-		errorMap.put("errorMessage", ex.getMessage());
-		return errorMap;
+	public ResponseEntity<CustomerAppError> handleresourceNotFound(ResourceNotFoundException ex) {
+		CustomerAppError error = new CustomerAppError(ex.getMessage(), HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
 	}
 	
 	/**
@@ -79,10 +80,9 @@ public class CustomerExceptionHandler {
 	 */
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MissingServletRequestParameterException.class)
-	public Map<String, String> handleresourceNotFound(MissingServletRequestParameterException ex) {
-		Map<String, String> errorMap = new HashMap<>();
-		errorMap.put("errorMessage", ex.getMessage());
-		return errorMap;
+	public ResponseEntity<CustomerAppError> handleresourceNotFound(MissingServletRequestParameterException ex) {
+		CustomerAppError error = new CustomerAppError(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
 	}
 	
 	/**
@@ -92,10 +92,9 @@ public class CustomerExceptionHandler {
 	 */
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(ConstraintViolationException.class)
-	public Map<String, String> handleresourceNotFound(ConstraintViolationException ex) {
-		Map<String, String> errorMap = new HashMap<>();
-		errorMap.put("errorMessage", ex.getMessage());
-		return errorMap;
+	public ResponseEntity<CustomerAppError> handleresourceNotFound(ConstraintViolationException ex) {
+		CustomerAppError error = new CustomerAppError(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
 	}
 	
 	/**
@@ -105,11 +104,8 @@ public class CustomerExceptionHandler {
 	 */
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(HttpMessageNotReadableException.class)
-	public Map<String, String> handleInputsInNotFormat(HttpMessageNotReadableException ex) {
-		Map<String, String> errorMap = new HashMap<>();
-		errorMap.put("errorMessage", CustomerDetailConstant.inputDataErrorMessage);
-		return errorMap;
+	public ResponseEntity<CustomerAppError> handleInputsInNotFormat(HttpMessageNotReadableException ex) {
+		CustomerAppError error = new CustomerAppError(CustomerDetailConstant.inputDataErrorMessage, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
 	}
-	
-	
 }

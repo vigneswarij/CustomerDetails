@@ -10,4 +10,5 @@ public class CustomerDetailConstant {
 	public static final String name ="The Name ";
 	public static final String notFoundSpecific=" Not Found";
 	public static final String errMsgSpecficById = "There is no customer with id ";
+	public static final String empty="";
 }
